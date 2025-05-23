@@ -1,0 +1,17 @@
+# Java
+*.class
+*.jar
+
+# Maven
+target/
+
+# IDEs
+.vscode/
+.idea/
+
+# DB Browser
+*.db
+*.sqlite
+
+# Env
+env.properties
