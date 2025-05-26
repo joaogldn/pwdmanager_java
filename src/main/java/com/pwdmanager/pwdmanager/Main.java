@@ -1,44 +1,57 @@
 package com.pwdmanager.pwdmanager;
 
-import com.pwdmanager.pwdmanager.dao.UserDAO;
+import com.pwdmanager.pwdmanager.dao.PasswordDAO;
+import com.pwdmanager.pwdmanager.model.PasswordEntry;
 import com.pwdmanager.pwdmanager.model.User;
+import com.pwdmanager.pwdmanager.service.AuthService;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        UserDAO userDao = new UserDAO();
+        AuthService authService = new AuthService();
+        PasswordDAO passwordDao = new PasswordDAO();
 
-        // Criar e salvar novo usuário
-        User user = new User();
-        user.setEmail("teste123@email.com");
-        user.setHashedPassword("senhaHashedAqui");  // Simule hash para teste
-        userDao.save(user);
-        System.out.println("Usuário criado com ID: " + user.getId());
+        // Registrar usuário
+        authService.registerUser("teste123@email.com", "senhaSegura123");
 
-        // Buscar usuário pelo ID
-        User userBuscado = userDao.findById(user.getId());
-        if (userBuscado != null) {
-            System.out.println("Usuário buscado: " + userBuscado.getEmail());
-
-            // Atualizar usuário
-            userBuscado.setEmail("testeAtualizado@email.com");
-            userDao.update(userBuscado);
-            System.out.println("Usuário atualizado.");
-
-        } else {
-            System.out.println("Usuário não encontrado para atualizar.");
+        // Tentar login
+        User user = authService.login("teste123@email.com", "senhaSegura123");
+        if (user == null) {
+            System.out.println("Falha no login. Encerrando.");
+            return;
         }
 
-        // Listar todos usuários
-        List<User> usuarios = userDao.findAll();
-        System.out.println("Lista de usuários:");
-        for (User u : usuarios) {
-            System.out.println(u.getId() + ": " + u.getEmail());
+        // Criar e salvar entrada de senha
+        PasswordEntry entry = new PasswordEntry();
+        entry.setUserId(user.getId());
+        entry.setTitle("Minha Conta de Email");
+        entry.setPassword("senhaSuperSecreta123");
+        passwordDao.save(entry);
+        System.out.println("Entrada de senha salva com ID: " + entry.getId());
+
+        // Buscar entradas de senha do usuário
+        List<PasswordEntry> entries = passwordDao.findAllByUserId(user.getId());
+        System.out.println("Entradas de senha para o usuário:");
+        for (PasswordEntry e : entries) {
+            System.out.println(e.getId() + ": " + e.getTitle() + " - " + e.getPassword());
         }
+
+        // Atualizar entrada
+        entry.setTitle("Conta Email Atualizada");
+        entry.setPassword("novaSenhaUltraSecreta456");
+        passwordDao.update(entry);
+        System.out.println("Entrada de senha atualizada.");
+
+        // Buscar novamente após atualização
+        PasswordEntry atualizada = passwordDao.findById(entry.getId());
+        System.out.println("Atualizada: " + atualizada.getTitle() + " - " + atualizada.getPassword());
+
+        // Deletar entrada
+        passwordDao.delete(entry.getId());
+        System.out.println("Entrada de senha deletada.");
 
         // Deletar usuário
-        userDao.delete(user.getId());
-        System.out.println("Usuário deletado.");
+        new com.pwdmanager.pwdmanager.dao.UserDAO().delete(user.getId());
     }
 }
