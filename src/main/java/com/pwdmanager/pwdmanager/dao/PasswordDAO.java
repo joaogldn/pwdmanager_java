@@ -19,7 +19,13 @@ public class PasswordDAO {
             stmt.setInt(1, entry.getUserId());
             stmt.setString(2, entry.getService());
             stmt.setString(3, entry.getUsername());
-            stmt.setString(4, CryptoUtils.encrypt(entry.getPassword())); // Criptografar antes de salvar
+
+            try {
+                stmt.setString(4, CryptoUtils.encrypt(entry.getPassword())); // Criptografar antes de salvar
+            } catch (Exception e) {
+                throw new RuntimeException("Erro ao criptografar a senha", e);
+            }
+
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
@@ -52,7 +58,11 @@ public class PasswordDAO {
                 entry.setUserId(rs.getInt("user_id"));
                 entry.setService(rs.getString("service"));
                 entry.setUsername(rs.getString("username"));
-                entry.setPassword(CryptoUtils.decrypt(rs.getString("password"))); // Descriptografar ao buscar
+                try {
+                    entry.setPassword(CryptoUtils.decrypt(rs.getString("password"))); // Descriptografar ao buscar
+                } catch (Exception e) {
+                    throw new RuntimeException("Erro ao descriptografar a senha", e);
+                }
                 return entry;
             } else {
                 System.out.println("[DEBUG] findById: Nenhuma entrada encontrada para id = " + id);
@@ -80,7 +90,11 @@ public class PasswordDAO {
                 entry.setUserId(rs.getInt("user_id"));
                 entry.setService(rs.getString("service"));
                 entry.setUsername(rs.getString("username"));
-                entry.setPassword(CryptoUtils.decrypt(rs.getString("password"))); // Descriptografar
+                try {
+                    entry.setPassword(CryptoUtils.decrypt(rs.getString("password"))); // Descriptografar
+                } catch (Exception e) {
+                    throw new RuntimeException("Erro ao descriptografar a senha", e);
+                }
                 entries.add(entry);
             }
 
@@ -99,7 +113,11 @@ public class PasswordDAO {
 
             stmt.setString(1, entry.getService());
             stmt.setString(2, entry.getUsername());
-            stmt.setString(3, CryptoUtils.encrypt(entry.getPassword())); // Criptografar
+            try {
+                stmt.setString(3, CryptoUtils.encrypt(entry.getPassword())); // Criptografar
+            } catch (Exception e) {
+                throw new RuntimeException("Erro ao criptografar a senha", e);
+            }
             stmt.setInt(4, entry.getId());
 
             int updated = stmt.executeUpdate();
