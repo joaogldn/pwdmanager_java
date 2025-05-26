@@ -4,54 +4,23 @@ import com.pwdmanager.pwdmanager.dao.PasswordDAO;
 import com.pwdmanager.pwdmanager.model.PasswordEntry;
 import com.pwdmanager.pwdmanager.model.User;
 import com.pwdmanager.pwdmanager.service.AuthService;
+import com.pwdmanager.pwdmanager.service.TwoFactorAuthService;
+import java.io.IOException;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        AuthService authService = new AuthService();
-        PasswordDAO passwordDao = new PasswordDAO();
+        TwoFactorAuthService authService = new TwoFactorAuthService();
+        String emailParaTeste = "joaogald07@gmail.com";  // substitua pelo seu e-mail pessoal
+        String token = "123456";  // token de exemplo para teste
 
-        // Registrar usuário
-        authService.registerUser("teste123@email.com", "senhaSegura123");
-
-        // Tentar login
-        User user = authService.login("teste123@email.com", "senhaSegura123");
-        if (user == null) {
-            System.out.println("Falha no login. Encerrando.");
-            return;
+        try {
+            authService.enviarToken(emailParaTeste, token);
+            System.out.println("E-mail enviado com sucesso!");
+        } catch (IOException e) {
+            System.err.println("Erro ao enviar e-mail: " + e.getMessage());
         }
-
-        // Criar e salvar entrada de senha
-        PasswordEntry entry = new PasswordEntry();
-        entry.setUserId(user.getId());
-        entry.setTitle("Minha Conta de Email");
-        entry.setPassword("senhaSuperSecreta123");
-        passwordDao.save(entry);
-        System.out.println("Entrada de senha salva com ID: " + entry.getId());
-
-        // Buscar entradas de senha do usuário
-        List<PasswordEntry> entries = passwordDao.findAllByUserId(user.getId());
-        System.out.println("Entradas de senha para o usuário:");
-        for (PasswordEntry e : entries) {
-            System.out.println(e.getId() + ": " + e.getTitle() + " - " + e.getPassword());
-        }
-
-        // Atualizar entrada
-        entry.setTitle("Conta Email Atualizada");
-        entry.setPassword("novaSenhaUltraSecreta456");
-        passwordDao.update(entry);
-        System.out.println("Entrada de senha atualizada.");
-
-        // Buscar novamente após atualização
-        PasswordEntry atualizada = passwordDao.findById(entry.getId());
-        System.out.println("Atualizada: " + atualizada.getTitle() + " - " + atualizada.getPassword());
-
-        // Deletar entrada
-        passwordDao.delete(entry.getId());
-        System.out.println("Entrada de senha deletada.");
-
-        // Deletar usuário
-        new com.pwdmanager.pwdmanager.dao.UserDAO().delete(user.getId());
     }
 }
