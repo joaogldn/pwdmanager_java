@@ -34,6 +34,13 @@
     <artifactId>jbcrypt</artifactId>
     <version>0.4</version>
     </dependency>
+<!-- dependencia para env caso decida testar a aplicação
+    <dependency>
+    <groupId>io.github.cdimascio</groupId>
+    <artifactId>java-dotenv</artifactId>
+    <version>5.2.2</version>
+    </dependency>
+           -->
   </dependencies>
 
   <build>
