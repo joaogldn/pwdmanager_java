@@ -12,35 +12,84 @@ public class PasswordGenerator {
     private static final String NUMBERS = "0123456789";
     private static final String SPECIALS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 
+    /**
+     * Gera uma senha segura com comprimento especificado
+     * @param length Tamanho da senha (mínimo 12)
+     * @return Senha gerada
+     * @throws IllegalArgumentException Se o comprimento for menor que 12
+     */
     public static String generateSecurePassword(int length) {
-        if (length < 12) {
-            throw new IllegalArgumentException("Senha muito curta. Mínimo 12 caracteres.");
+        validatePasswordLength(length);
+        
+        SecureRandom random = new SecureRandom();
+        List<Character> passwordChars = buildPasswordChars(random, length);
+        
+        return convertToString(passwordChars);
+    }
+
+    /**
+     * Gera uma senha segura com comprimento padrão (14 caracteres)
+     */
+    public static String generateSecurePassword() {
+        return generateSecurePassword(14);
+    }
+
+    /**
+     * Calcula a força da senha (0-5)
+     * @param password Senha a ser avaliada
+     * @return Nível de força
+     */
+    public static int calculatePasswordStrength(String password) {
+        if (password == null || password.isEmpty()) {
+            return 0;
         }
 
-        SecureRandom random = new SecureRandom();
-        StringBuilder password = new StringBuilder(length);
-        List<Character> passwordChars = new ArrayList<>();
+        int strength = 0;
+        
+        // Critérios de força
+        if (password.length() >= 12) strength++;
+        if (password.matches(".*[a-z].*")) strength++;
+        if (password.matches(".*[A-Z].*")) strength++;
+        if (password.matches(".*\\d.*")) strength++;
+        if (password.matches(".*[" + SPECIALS + "].*")) strength++;
+        
+        return strength;
+    }
 
-        // Garante pelo menos um caractere de cada tipo
-        passwordChars.add(LOWERCASE.charAt(random.nextInt(LOWERCASE.length())));
-        passwordChars.add(UPPERCASE.charAt(random.nextInt(UPPERCASE.length())));
-        passwordChars.add(NUMBERS.charAt(random.nextInt(NUMBERS.length())));
-        passwordChars.add(SPECIALS.charAt(random.nextInt(SPECIALS.length())));
+    public static boolean isPasswordStrong(String password) {
+        return calculatePasswordStrength(password) >= 4;
+    }
 
-        // Preenche o resto aleatoriamente
+    private static void validatePasswordLength(int length) {
+        if (length < 12) {
+            throw new IllegalArgumentException("A senha deve ter no mínimo 12 caracteres");
+        }
+    }
+
+    private static List<Character> buildPasswordChars(SecureRandom random, int length) {
+        List<Character> chars = new ArrayList<>(length);
+        
+        // Garante pelo menos um de cada tipo
+        chars.add(LOWERCASE.charAt(random.nextInt(LOWERCASE.length())));
+        chars.add(UPPERCASE.charAt(random.nextInt(UPPERCASE.length())));
+        chars.add(NUMBERS.charAt(random.nextInt(NUMBERS.length())));
+        chars.add(SPECIALS.charAt(random.nextInt(SPECIALS.length())));
+        
+        // Preenche o resto
         String allChars = LOWERCASE + UPPERCASE + NUMBERS + SPECIALS;
         for (int i = 4; i < length; i++) {
-            passwordChars.add(allChars.charAt(random.nextInt(allChars.length())));
+            chars.add(allChars.charAt(random.nextInt(allChars.length())));
         }
+        
+        Collections.shuffle(chars, random);
+        return chars;
+    }
 
-        // Embaralha para não ter padrão previsível
-        Collections.shuffle(passwordChars, random);
-
-        // Converte para String
-        for (char c : passwordChars) {
-            password.append(c);
+    private static String convertToString(List<Character> chars) {
+        StringBuilder sb = new StringBuilder(chars.size());
+        for (char c : chars) {
+            sb.append(c);
         }
-
-        return password.toString();
+        return sb.toString();
     }
 }
