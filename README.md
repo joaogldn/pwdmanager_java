@@ -26,7 +26,7 @@ Aplicação Java para armazenamento seguro de credenciais com criptografia e aut
 ### ⚙️ Configuração
 - Crie um arquivo .env na raiz do projeto:
 SENDGRID_API_KEY=sua_chave_aqui
-JWT_SECRET=seu_segredo_aqui
+
 #### Exemplo  (nunca comite este arquivo, o que está no código é possui chave inexistente!)
 
 ### Fluxo Principal
