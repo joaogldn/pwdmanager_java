@@ -17,8 +17,8 @@ Aplicação Java para armazenamento seguro de credenciais com criptografia e aut
 - Git 2.30+
 
 ## Ferramentas utilizadas
-- VSCode
-- DB Browser
+- Visual Studio Code
+- DB Browser v3.13.1
 - Git
 
 
