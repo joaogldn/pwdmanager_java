@@ -8,6 +8,8 @@ import com.pwdmanager.pwdmanager.service.AuthService;
 import com.pwdmanager.pwdmanager.service.TokenService;
 import com.pwdmanager.pwdmanager.service.TwoFactorAuthService;
 import com.pwdmanager.pwdmanager.util.CryptoUtils;
+import com.pwdmanager.pwdmanager.util.HashUtils;
+import com.pwdmanager.pwdmanager.util.SaltUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,10 +43,15 @@ public class Main {
                     System.out.print("Senha: ");
                     String senhaCadastro = scanner.nextLine();
 
+                    // Correção aplicada aqui: Gerar salt e hash antes de criar o usuário
+                    String salt = SaltUtils.getRandomSalt();
+                    String hashedPassword = HashUtils.hashPassword(senhaCadastro, salt);
+
                     User novoUsuario = new User();
                     novoUsuario.setName(nome);
                     novoUsuario.setEmail(email);
-                    novoUsuario.setHashedPassword(senhaCadastro);
+                    novoUsuario.setSalt(salt); // Definindo o salt
+                    novoUsuario.setHashedPassword(hashedPassword); // Salvando o hash
 
                     if (userDAO.save(novoUsuario)) {
                         System.out.println("✅ Usuário cadastrado com sucesso!");
@@ -163,7 +170,7 @@ public class Main {
 
                     PasswordEntry senha = passwordDAO.findById(idSenha);
                     if (senha == null || senha.getUserId() != usuarioLogado.getId()) {
-                        System.out.println("Senha não encontrada ou não pertence ao usuário logado.");
+                        System.out.println("Senha não encontrada ou você não se cadastrou a senha dentro do gerenciador.");
                     } else {
                         String decrypted = CryptoUtils.decrypt(senha.getPassword());
                         System.out.println("🔐 Senha para " + senha.getTitle() + " (" + senha.getUsername() + "): " + decrypted);

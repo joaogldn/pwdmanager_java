@@ -4,8 +4,8 @@ public class User {
     private int id;
     private String name;
     private String email;
-    private String salt;            // novo campo salt
-    private String hashedPassword;  // hash da senha + salt
+    private String salt;           
+    private String hashedPassword;  
 
     public int getId() {
         return id;

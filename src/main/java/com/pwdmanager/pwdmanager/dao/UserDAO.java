@@ -11,21 +11,21 @@ public class UserDAO {
 
     public boolean save(User user) {
         String sql = "INSERT INTO users(name, email, salt, hashed_password) VALUES (?, ?, ?, ?)";
-    
+
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-    
+
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getEmail());
-            stmt.setString(3, user.getSalt());          // novo campo salt
-            stmt.setString(4, user.getHashedPassword()); // hash da senha + salt
-    
+            stmt.setString(3, user.getSalt());
+            stmt.setString(4, user.getHashedPassword());
+
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
                 System.out.println("[ERRO] Nenhuma linha afetada ao inserir usuário.");
                 return false;
             }
-    
+
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     user.setId(generatedKeys.getInt(1));
@@ -34,9 +34,9 @@ public class UserDAO {
                     return false;
                 }
             }
-    
+
             return true;
-    
+
         } catch (SQLException e) {
             System.err.println("[ERRO] Erro ao salvar usuário: " + e.getMessage());
             return false;
@@ -74,7 +74,8 @@ public class UserDAO {
                 user.setId(rs.getInt("id"));
                 user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
-                user.setHashedPassword(rs.getString("hashedPassword"));
+                user.setSalt(rs.getString("salt"));
+                user.setHashedPassword(rs.getString("hashed_password"));
                 return user;
             }
 
@@ -99,7 +100,8 @@ public class UserDAO {
                 user.setId(rs.getInt("id"));
                 user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
-                user.setHashedPassword(rs.getString("hashedPassword"));
+                user.setSalt(rs.getString("salt"));
+                user.setHashedPassword(rs.getString("hashed_password"));
                 return user;
             }
 
@@ -123,7 +125,8 @@ public class UserDAO {
                 user.setId(rs.getInt("id"));
                 user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
-                user.setHashedPassword(rs.getString("hashedPassword"));
+                user.setSalt(rs.getString("salt"));
+                user.setHashedPassword(rs.getString("hashed_password"));
                 users.add(user);
             }
 
@@ -135,15 +138,16 @@ public class UserDAO {
     }
 
     public void update(User user) {
-        String sql = "UPDATE users SET name = ?, email = ?, hashedPassword = ? WHERE id = ?";
+        String sql = "UPDATE users SET name = ?, email = ?, salt = ?, hashed_password = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getEmail());
-            stmt.setString(3, user.getHashedPassword());
-            stmt.setInt(4, user.getId());
+            stmt.setString(3, user.getSalt());
+            stmt.setString(4, user.getHashedPassword());
+            stmt.setInt(5, user.getId());
 
             int updated = stmt.executeUpdate();
             if (updated == 0) {

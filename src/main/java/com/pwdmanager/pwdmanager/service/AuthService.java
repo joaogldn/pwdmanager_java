@@ -4,7 +4,7 @@ import com.pwdmanager.pwdmanager.dao.UserDAO;
 import com.pwdmanager.pwdmanager.model.User;
 import com.pwdmanager.pwdmanager.util.HashUtils;
 import com.pwdmanager.pwdmanager.util.SaltUtils;
-import org.mindrot.jbcrypt.BCrypt;
+
 
 public class AuthService {
 
