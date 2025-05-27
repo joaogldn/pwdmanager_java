@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class TwoFactorAuthService {
     private static final String SENDGRID_API_KEY = "sua_chave_api"; 
-    private static final String FROM_EMAIL = "gerenciadorsenhas87@gmail.com"; 
+    private static final String FROM_EMAIL = "seu_email_do_sendgrid_aqui"; 
 
     public void enviarToken(String emailDestino, String token) throws IOException {
         Email from = new Email(FROM_EMAIL);
