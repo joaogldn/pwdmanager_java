@@ -7,7 +7,7 @@ import com.sendgrid.helpers.mail.objects.Email;
 import java.io.IOException;
 
 public class TwoFactorAuthService {
-    private static final String SENDGRID_API_KEY = "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"; 
+    private static final String SENDGRID_API_KEY = "sua_chave_api"; 
     private static final String FROM_EMAIL = "gerenciadorsenhas87@gmail.com"; 
 
     public void enviarToken(String emailDestino, String token) throws IOException {
