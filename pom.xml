@@ -34,11 +34,21 @@
     <artifactId>jbcrypt</artifactId>
     <version>0.4</version>
     </dependency>
+<<<<<<< HEAD
     <dependency>
     <groupId>org.apache.httpcomponents</groupId>
     <artifactId>httpclient</artifactId>
     <version>4.5.13</version>
    </dependency>
+=======
+<!-- dependencia para env caso decida testar a aplicação
+    <dependency>
+    <groupId>io.github.cdimascio</groupId>
+    <artifactId>java-dotenv</artifactId>
+    <version>5.2.2</version>
+    </dependency>
+           -->
+>>>>>>> ed92ec63a9606adf4c7e25fd0d68c1e1a465dfdf
   </dependencies>
 
   <build>

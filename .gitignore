@@ -15,3 +15,7 @@ target/
 
 # Env
 env.properties
+
+# Arquivos de configuração .env caso use
+# .env
+# *.env
