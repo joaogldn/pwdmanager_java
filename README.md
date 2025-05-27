@@ -16,6 +16,12 @@ Aplicação Java para armazenamento seguro de credenciais com criptografia e aut
 - Conta no [SendGrid](https://sendgrid.com/) (para e-mails)
 - Git 2.30+
 
+## Ferramentas utilizadas
+- VSCode
+- DB Browser
+- Git
+
+
 ### Instalação
 ``` git clone https://github.com/joaogldn/pwdmanager_java.git ```
 - Acesse o local que você clonou a aplicação e abra seu bash
