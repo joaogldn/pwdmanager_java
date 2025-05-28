@@ -21,16 +21,7 @@ Aplicação Java para armazenamento seguro de credenciais com criptografia e aut
 ``` mvn clean compile exec:java ```
 
 ### ⚙️ Configuração
-- Crie um arquivo .env na raiz do projeto:
-SENDGRID_API_KEY=sua_chave_aqui
-
-#### Exemplo  (nunca comite este arquivo, o que está no código é possui chave inexistente!)
-
-### Fluxo Principal
-1. Registre um novo usuário para acessar a aplicação
-2. Faça login com 2FA
-3. Adicione/gerencie senhas
-4. Visualize credenciais com verificação de token
+- Crie um arquivo .env na raiz do projeto e coloque no código a variável de ambiente que você configurou no seu sistema(Nunca dê commit em arquivos que possuam a chave e nunca deixe ela exposta).
 
 ## 🔧 Tecnologias
 
