@@ -16,12 +16,13 @@
       <version>3.41.2.2</version>
     </dependency>
 
-   
+   <!-- API do SendGrid caso deseje utilizar
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-crypto</artifactId>
-      <version>6.3.8</version>
+      <version>6.3.9</version>
     </dependency>
+   -->
 
     <!-- Atualizado para corrigir várias dependências transitivas -->
     <dependency>
