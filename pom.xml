@@ -18,12 +18,7 @@
 
    <!-- Coloque a versão de dependencia da API do SendGrid com sua versão caso deseje utilizar -->
 
-    <!-- Atualizado para corrigir várias dependências transitivas -->
-    <dependency>
-      <groupId>com.sendgrid</groupId>
-      <artifactId>sendgrid-java</artifactId>
-      <version>4.10.2</version>
-    </dependency>
+    <!-- E também a dependencia transitiva -->
 
     <!-- HttpClient permanece sem correção disponível -->
     <dependency>
