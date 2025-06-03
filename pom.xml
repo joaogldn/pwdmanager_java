@@ -9,46 +9,49 @@
   <version>0.1.0-SNAPSHOT</version>
 
   <dependencies>
+   
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
-      <version>3.41.2.1</version>
+      <version>3.41.2.2</version>
     </dependency>
+
+   
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-crypto</artifactId>
-      <version>6.1.2</version>
+      <version>6.3.8</version>
     </dependency>
+
+    <!-- Atualizado para corrigir várias dependências transitivas -->
     <dependency>
       <groupId>com.sendgrid</groupId>
       <artifactId>sendgrid-java</artifactId>
-      <version>4.9.3</version>
+      <version>4.10.2</version>
     </dependency>
+
+    <!-- HttpClient permanece sem correção disponível -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.14</version>
     </dependency>
+
+    <!-- jBCrypt ainda seguro até o momento -->
     <dependency>
-    <groupId>org.mindrot</groupId>
-    <artifactId>jbcrypt</artifactId>
-    <version>0.4</version>
+      <groupId>org.mindrot</groupId>
+      <artifactId>jbcrypt</artifactId>
+      <version>0.4</version>
     </dependency>
-<<<<<<< HEAD
+
+    <!-- Dependência comentada, descomente se for usar dotenv -->
+    <!--
     <dependency>
-    <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpclient</artifactId>
-    <version>4.5.13</version>
-   </dependency>
-=======
-<!-- dependencia para env caso decida testar a aplicação
-    <dependency>
-    <groupId>io.github.cdimascio</groupId>
-    <artifactId>java-dotenv</artifactId>
-    <version>5.2.2</version>
+      <groupId>io.github.cdimascio</groupId>
+      <artifactId>java-dotenv</artifactId>
+      <version>5.2.2</version>
     </dependency>
-           -->
->>>>>>> ed92ec63a9606adf4c7e25fd0d68c1e1a465dfdf
+    -->
   </dependencies>
 
   <build>
