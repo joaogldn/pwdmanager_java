@@ -12,17 +12,17 @@
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
-      <version>3.41.2.1</version>
+      <version>3.41.2.2</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-crypto</artifactId>
-      <version>6.1.2</version>
+      <version>6.3.8</version>
     </dependency>
     <dependency>
       <groupId>com.sendgrid</groupId>
       <artifactId>sendgrid-java</artifactId>
-      <version>4.9.3</version>
+      <version>4.10.2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -34,7 +34,7 @@
     <artifactId>jbcrypt</artifactId>
     <version>0.4</version>
     </dependency>
-<<<<<<< HEAD
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
     <dependency>
     <groupId>org.apache.httpcomponents</groupId>
     <artifactId>httpclient</artifactId>
@@ -48,7 +48,7 @@
     <version>5.2.2</version>
     </dependency>
            -->
->>>>>>> ed92ec63a9606adf4c7e25fd0d68c1e1a465dfdf
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; ed92ec63a9606adf4c7e25fd0d68c1e1a465dfdf
   </dependencies>
 
   <build>
