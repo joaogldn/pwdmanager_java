@@ -1,76 +1,61 @@
 package com.pwdmanager.pwdmanager.util;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
-import java.security.SecureRandom;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.*;
 import java.util.Base64;
 
 public class CryptoUtils {
-
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES/GCM/NoPadding";
     private static final int GCM_TAG_LENGTH = 128;
-    private static final int GCM_IV_LENGTH = 12;
-    private static final int AES_KEY_SIZE = 128; // bits
+    private static final int IV_LENGTH = 12;
+    private static final String SECRET_KEY = "YourSecretKey123"; // Substitua por uma chave segura
 
-    // Para fins de exemplo. Em produção, armazene essa chave em local seguro (ex: KMS, variável de ambiente, etc.)
-    private static SecretKey generateKey() throws Exception {
-        KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
-        keyGen.init(AES_KEY_SIZE, SecureRandom.getInstanceStrong());
-        return keyGen.generateKey();
-    }
-
-    public static String encrypt(String data, SecretKey key) {
+    public static String encrypt(String data) {
         try {
-            byte[] iv = new byte[GCM_IV_LENGTH];
-            SecureRandom random = SecureRandom.getInstanceStrong();
+            byte[] iv = new byte[IV_LENGTH];
+            SecureRandom random = new SecureRandom();
             random.nextBytes(iv);
 
+            SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY.getBytes(), ALGORITHM);
+            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
+
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
-            cipher.init(Cipher.ENCRYPT_MODE, key, spec);
-            byte[] encrypted = cipher.doFinal(data.getBytes("UTF-8"));
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, gcmParameterSpec);
 
-            byte[] encryptedWithIv = new byte[iv.length + encrypted.length];
-            System.arraycopy(iv, 0, encryptedWithIv, 0, iv.length);
-            System.arraycopy(encrypted, 0, encryptedWithIv, iv.length, encrypted.length);
+            byte[] encryptedData = cipher.doFinal(data.getBytes("UTF-8"));
+            byte[] combined = new byte[iv.length + encryptedData.length];
+            
+            System.arraycopy(iv, 0, combined, 0, iv.length);
+            System.arraycopy(encryptedData, 0, combined, iv.length, encryptedData.length);
 
-            return Base64.getEncoder().encodeToString(encryptedWithIv);
+            return Base64.getEncoder().encodeToString(combined);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao criptografar", e);
+            throw new RuntimeException("Erro na criptografia", e);
         }
     }
 
-    public static String decrypt(String encryptedData, SecretKey key) {
+    public static String decrypt(String encryptedData) {
         try {
-            byte[] decoded = Base64.getDecoder().decode(encryptedData);
-            byte[] iv = new byte[GCM_IV_LENGTH];
-            byte[] encrypted = new byte[decoded.length - GCM_IV_LENGTH];
+            byte[] combined = Base64.getDecoder().decode(encryptedData);
+            byte[] iv = new byte[IV_LENGTH];
+            byte[] encryptedBytes = new byte[combined.length - IV_LENGTH];
 
-            System.arraycopy(decoded, 0, iv, 0, GCM_IV_LENGTH);
-            System.arraycopy(decoded, GCM_IV_LENGTH, encrypted, 0, encrypted.length);
+            System.arraycopy(combined, 0, iv, 0, IV_LENGTH);
+            System.arraycopy(combined, IV_LENGTH, encryptedBytes, 0, encryptedBytes.length);
+
+            SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY.getBytes(), ALGORITHM);
+            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
 
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            GCMParameterSpec spec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
-            cipher.init(Cipher.DECRYPT_MODE, key, spec);
-            byte[] decrypted = cipher.doFinal(encrypted);
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec);
 
-            return new String(decrypted, "UTF-8");
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            return new String(decryptedBytes, "UTF-8");
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao descriptografar", e);
+            throw new RuntimeException("Erro na descriptografia", e);
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        SecretKey key = generateKey();
-
-        String senhaOriginal = "Juniorpb22";
-        String criptografada = encrypt(senhaOriginal, key);
-        System.out.println("Criptografada (Base64): " + criptografada);
-
-        String descriptografada = decrypt(criptografada, key);
-        System.out.println("Descriptografada: " + descriptografada);
     }
 }
