@@ -10,7 +10,7 @@ public class PasswordGenerator {
     private static final String LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String NUMBERS = "0123456789";
-    private static final String SPECIALS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+    private static final String SPECIALS = "!@#$%^&*()_+\\-=\\[\\]{}|;:,.<>?";
 
     /**
      * Gera uma senha segura com comprimento especificado
